@@ -13,20 +13,46 @@
 template <typename T>
 std::set<T> setIntersection(std::set<T>& s1, std::set<T>& s2)
 {
+    // intersection is all the terms that the 2 sets have in common
+    std::set<T> intersectionSet; 
+    
+    // iterators for s1 and s2 
+    typename std::set<T>::iterator it1 = s1.begin();
+    typename std::set<T>::iterator it2 = s2.begin();
 
-
-
-
-
+    // sets are sorted therefore need to check inequalties for each element
+    while (it1 != s1.end() && it2 != s2.end()) 
+    {
+        if (*it1 > *it2) 
+        {
+            it2++;
+        }
+        else if (*it1 < *it2)
+        {
+            it1++;
+        }
+        else if (*it1 == *it2)
+        {
+            intersectionSet.insert(*it1);
+            it1++;
+            it2++;
+        }
+    }
+    return intersectionSet;
 }
 template <typename T>
 std::set<T> setUnion(std::set<T>& s1, std::set<T>& s2)
 {
+    // union is everything in s1 and s2 
+    // sets do not insert element if there is already a duplicate 
+    std::set<T> unionSet; 
 
-
-
-
-
+    // insert all elements from s1
+    unionSet.insert(s1.begin(), s1.end()); 
+    // insert all elements from s2
+    unionSet.insert(s2.begin(), s2.end());
+    
+    return unionSet;
 }
 
 /***********************************************/
@@ -46,4 +72,5 @@ std::string &rtrim(std::string &s) ;
 
 // Removes leading and trailing whitespace
 std::string &trim(std::string &s) ;
+
 #endif

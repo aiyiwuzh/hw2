@@ -15,16 +15,36 @@ std::string convToLower(std::string src)
     to a set of words based on the criteria given in the assignment **/
 std::set<std::string> parseStringToWords(string rawWords)
 {
+    // convert all to lowercase for clean comparison
+    rawWords = convToLower(rawWords);
 
+    // set to hold the keywords saved
+    std::set<std::string> keywords;
+    std::string currentWord;
 
+    // iterate through the word to analyze if valid
+    for (char c : rawWords)
+    {
+        if (!isspace(c) && !ispunct(c)) 
+        {
+            currentWord += c; 
+        }
+        else 
+        {
+            if (currentWord.length() >= 2)
+            {
+                keywords.insert(currentWord);
+            }
+            currentWord.clear();
+        }
+    }
 
-
-
-
-
-
-
-
+    if (currentWord.length() >= 2)
+    {
+        keywords.insert(currentWord);
+    }
+    
+    return keywords;
 }
 
 /**************************************************
@@ -32,22 +52,21 @@ std::set<std::string> parseStringToWords(string rawWords)
  **************************************************/
 
 // Used from http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+
 // trim from start
 std::string &ltrim(std::string &s) {
     s.erase(s.begin(), 
-	    std::find_if(s.begin(), 
-			 s.end(), 
-			 std::not1(std::ptr_fun<int, int>(std::isspace))));
+        std::find_if(s.begin(), s.end(), 
+            [](unsigned char c) { return !std::isspace(c); }));  // Using lambda function instead of std::ptr_fun
     return s;
 }
 
 // trim from end
 std::string &rtrim(std::string &s) {
     s.erase(
-	    std::find_if(s.rbegin(), 
-			 s.rend(), 
-			 std::not1(std::ptr_fun<int, int>(std::isspace))).base(), 
-	    s.end());
+        std::find_if(s.rbegin(), s.rend(), 
+            [](unsigned char c) { return !std::isspace(c); }).base(), 
+        s.end());
     return s;
 }
 
